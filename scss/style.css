@@ -1,0 +1,34 @@
+:root {
+  --variable-sizeX: 21;
+  --variable-sizeY: 21;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 16px;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.game-main {
+  background-color: #ccc;
+  width: 100vmin;
+  height: 100vmin;
+  margin: auto;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[21];
+      grid-template-rows: repeat(21, 1fr);
+  -ms-grid-columns: (1fr)[21];
+      grid-template-columns: repeat(21, 1fr);
+}
+/*# sourceMappingURL=style.css.map */

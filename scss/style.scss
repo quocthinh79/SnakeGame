@@ -1,0 +1,31 @@
+$sizeX: 21;
+$sizeY: 21;
+
+:root {
+    --variable-sizeX: #{$sizeX};
+    --variable-sizeY: #{$sizeY};
+}
+
+* {
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.game-main {
+    background-color: #ccc;
+    width: 100vmin;
+    height: 100vmin;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat($sizeX, 1fr);
+    grid-template-columns: repeat($sizeY, 1fr);
+    position: relative;
+}
