@@ -10,7 +10,7 @@ let foodPosition = {}
 
 let wall = []
 
-let rock = {x: randomInTheRange(1, sizeX), y: randomInTheRange(1, sizeY)}
+let rock = {}
 
 let gift = {}
 
@@ -20,7 +20,7 @@ let newLocalRock = {x: 1, y: 0}
 let newLocal = {x: 0, y: 0}
 let lastLocal = {x: 1, y: 0}
 let score = 0;
-let currentLevel = 1;
+let nextLevelCount = 1;
 const gameBoard = $('.game-main')
 const SWAP_LEVEL = 10
 let scoreHigh = $('.score-high')
@@ -45,6 +45,7 @@ let goMenu = $('.go-menu')
 let giftLabel = $('.gift')
 let giftString = "Nothing"
 let checkGift;
+let lastNumberRand = []
 
 
 let interval = setInterval(main, 250)
@@ -113,7 +114,9 @@ const setUpArrWallLevel3 = () => {
 
 
 function nextLevelFunc() {
+    lastNumberRand = []
     clearInterval(interval)
+    gift = {}
     nextLevel.css("display", "flex");
     gameBoard.css("display", "none");
     setTimeout(function () {
@@ -125,33 +128,41 @@ function nextLevelFunc() {
 
 function setUpNewGame() {
     futureScore = score + SWAP_LEVEL;
-    switch (currentLevel) {
+    if (nextLevelCount >= 3) {
+        rock = {x: randomInTheRange(1, sizeX), y: randomInTheRange(1, sizeY)}
+    } else {
+        rock = {}
+    }
+    switch (nextLevelCount) {
         case 1:
-            currentLevel = 2
+            nextLevelCount = 2
+            wall = []
+            setNewGame()
+            nextLevelFunc()
             break;
         case 2:
-            currentLevel = 3
+            nextLevelCount = 3
             wall = []
             setUpArrWallLevel2()
             setNewGame()
             nextLevelFunc()
             break;
         case 3:
-            currentLevel = 4
+            nextLevelCount = 4
             wall = []
             setUpArrWallLevel1()
             setNewGame()
             nextLevelFunc()
             break
         case 4:
-            currentLevel = 5
+            nextLevelCount = 5
             wall = []
             setUpArrWallLevel3()
             setNewGame()
             nextLevelFunc()
             break
         case 5:
-            currentLevel = 6
+            nextLevelCount = 6
             wall = []
             setUpArrWallLevel1()
             setUpArrWallLevel2()
@@ -159,7 +170,7 @@ function setUpNewGame() {
             nextLevelFunc()
             break
         case 6:
-            currentLevel = 7
+            nextLevelCount = 7
             wall = []
             setUpArrWallLevel2()
             setUpArrWallLevel3()
@@ -167,7 +178,7 @@ function setUpNewGame() {
             nextLevelFunc()
             break
         case 7:
-            currentLevel = 8
+            nextLevelCount = 8
             wall = []
             setUpArrWallLevel1()
             setUpArrWallLevel2()
@@ -202,8 +213,8 @@ function randomSetUpPosition(...element) {
         if (Array.isArray(x)) {
             x.map(segment => {
                 if ((randX === segment.x) && (randY === segment.y)) {
-                    randX = randomSetUpPosition(x, segment, ...element).x
-                    randY = randomSetUpPosition(x, segment, ...element).y
+                    randX = randomSetUpPosition(segment, segment.x, x, ...element).x
+                    randY = randomSetUpPosition(segment, segment.y, x, ...element).y
                 }
             })
         } else {
@@ -217,6 +228,7 @@ function randomSetUpPosition(...element) {
 }
 
 const setNewGame = () => {
+    lastNumberRand = []
     newLocal = {x: 0, y: 0}
     // Set up food
     foodPosition = randomSetUpPosition(wall)
@@ -227,11 +239,26 @@ const setNewGame = () => {
 
 setNewGame();
 
+function randomInTheRangeNotRepeat(min, max) {
+    let step1 = max - min + 1;
+    let step2 = Math.random() * step1;
+    let rand = Math.floor(step2) + min;
+    if (lastNumberRand.length === max) {
+        lastNumberRand = []
+    }
+    if (lastNumberRand.includes(rand)){
+        randomInTheRange(min, max)
+    } else {
+        lastNumberRand.push(rand)
+    }
+    return rand;
+}
+
+
 function randomInTheRange(min, max) {
-    let difference = max - min;
-    let rand = Math.random();
-    rand = Math.floor(rand * difference);
-    rand += min;
+    let step1 = max - min + 1;
+    let step2 = Math.random() * step1;
+    let rand = Math.floor(step2) + min;
     return rand;
 }
 
@@ -278,14 +305,14 @@ const setUpRock = (gameBoard) => {
     rockElement.style.backgroundImage = "url('/image/rock.png')"
     rockElement.style.backgroundPosition = "center"
     rockElement.style.backgroundSize = "contain"
+    rockElement.style.backgroundRepeat = "no-repeat"
     gameBoard.append(rockElement)
 }
+const giftElement = document.createElement('div')
 
 const setUpGift = (gameBoard) => {
-    const giftElement = document.createElement('div')
     giftElement.style.gridRowStart = gift.y
     giftElement.style.gridColumnStart = gift.x
-    giftElement.style.backgroundImage = "url('/image/gift.png')"
     giftElement.style.backgroundPosition = "center"
     giftElement.style.backgroundSize = "contain"
     giftElement.style.backgroundRepeat = "no-repeat"
@@ -307,6 +334,7 @@ const setUpSnake = (gameBoard) => {
 }
 
 const updateSnake = () => {
+    lastLocal = newLocal
     for (let index = bodySnake.length - 2; index >= 0; index--) {
         bodySnake[index + 1] = {...bodySnake[index]}
     }
@@ -326,7 +354,6 @@ const setUpFood = (gameBoard) => {
 }
 
 const eventKey = (e) => {
-    lastLocal = newLocal
     switch (e.key) {
         case 'ArrowUp':
             if (lastLocal.y !== 0) {
@@ -356,7 +383,7 @@ const eventKey = (e) => {
 }
 
 const eventKeyWithGift = (e) => {
-    lastLocal = newLocal
+    // lastLocal = newLocal
     switch (e.key) {
         case 'ArrowDown':
             if (lastLocal.y !== 0) {
@@ -387,16 +414,33 @@ const eventKeyWithGift = (e) => {
 
 window.addEventListener('keydown', eventKey)
 
+let numberRand
 
 const checkEat = () => {
-    let numberRand
     if ((bodySnake[0].x === foodPosition.x) && (bodySnake[0].y === foodPosition.y)) {
-
         score++;
-        foodPosition = randomSetUpPosition(wall, bodySnake)
+        foodPosition = randomSetUpPosition(wall, bodySnake, gift)
         bodySnake.push(foodPosition)
-        if (score % 5 === 0 && score % 10 !== 0) {
+        if (score % 2 === 0) {
             gift = randomSetUpPosition(wall, bodySnake, foodPosition, rock)
+            if (nextLevelCount > 2) {
+                numberRand = randomInTheRangeNotRepeat(1, 3)
+                if (nextLevelCount > 2 && nextLevelCount <= 4) {
+                    switch (numberRand) {
+                        case 1:
+                            giftElement.style.backgroundImage = "url('/image/arrow.png')"
+                            break;
+                        case 2:
+                            giftElement.style.backgroundImage = "url('/image/fast.png')"
+                            break;
+                        case 3:
+                            giftElement.style.backgroundImage = "url('/image/slow.png')"
+                            break;
+                    }
+                } else {
+                    giftElement.style.backgroundImage = "url('/image/gift.png')"
+                }
+            }
         }
 
         if (checkGift) {
@@ -411,7 +455,6 @@ const checkEat = () => {
 
     if ((bodySnake[0].x === gift.x) && (bodySnake[0].y === gift.y)) {
         checkGift = true
-        numberRand = randomInTheRange(1, 3)
         delete gift.x
         delete gift.y
     }
@@ -451,6 +494,8 @@ const checkWinLevelEasy = () => {
 function gameOver() {
     popUpGameOver.css("display", "flex")
     btnAccept.click(function () {
+        clearInterval(interval)
+        interval = setInterval(main, 250)
         window.removeEventListener('keydown', eventKeyWithGift)
         window.addEventListener('keydown', eventKey)
         popUpGameOver.css("display", "none")
@@ -509,13 +554,13 @@ const setUp = (gameBoard) => {
 }
 
 btnNewGame.click(function () {
-    currentLevel = 2
+    nextLevelCount = 2
     wall = []
+    rock = {}
+    gift = {}
     setNewGame()
     popupNewGame.css("display", "none")
     popUpGameOver.css("display", "none")
-    clearInterval(interval)
-    interval = setInterval(main, 250)
     window.removeEventListener('keydown', eventKeyWithGift)
     window.addEventListener('keydown', eventKey)
 })
@@ -529,13 +574,11 @@ goBack.click(function () {
     popUpGameOver.css("display", "none")
 })
 level.click(function () {
-    currentLevel = parseInt($(this).val())
+    nextLevelCount = parseInt($(this).val())
     setUpNewGame()
     popUpGameOver.css("display", "none")
     popupNewGame.css("display", "none")
     nextLevel.css("display", "none")
-    clearInterval(interval)
-    interval = setInterval(main, 250)
     window.removeEventListener('keydown', eventKeyWithGift)
     window.addEventListener('keydown', eventKey)
 })
@@ -548,7 +591,7 @@ goMenu.click(function () {
 function main() {
     gameBoard.html('')
 
-    if (currentLevel > 3) {
+    if (nextLevelCount > 3) {
         rockMove()
     }
 
@@ -563,7 +606,7 @@ function main() {
         highestScoreNewGame.text('HIGHEST SCORE: ' + localStorage.getItem('highestScore'))
         scoreHigh.text(localStorage.getItem('highestScore'))
     }
-    levelLabel.text('Level: ' + (currentLevel - 1));
+    levelLabel.text('Level: ' + (nextLevelCount - 1));
     scoreLabel.text('Score: ' + score);
     giftLabel.text('Gift: ' + giftString)
     newScore = score + 1
