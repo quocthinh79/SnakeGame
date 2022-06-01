@@ -4,31 +4,188 @@
 }
 
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 16px;
 }
 
 body {
   padding: 0;
   margin: 0;
+  display: flex;
+  position: relative;
+}
+body .div-right {
+  display: flex;
+  flex-direction: column;
+}
+body .div-right .level, body .div-right .score, body .div-right .highest-score, body .div-right .gift {
+  font-size: 3rem;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #dfdfdf;
+  margin: 0.5rem;
+}
+body .div-right span {
+  font-size: 3rem;
+}
+body .popup-game-over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.98);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+body .popup-game-over .message-game-over {
+  width: 40%;
+  height: 30%;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body .popup-game-over .message-game-over .title-game-over,
+body .popup-game-over .message-game-over .content-game-over,
+body .popup-game-over .message-game-over .button-game-over {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+body .popup-game-over .message-game-over .content-game-over {
+  font-size: 2rem;
+}
+body .popup-game-over .message-game-over .title-game-over {
+  flex: 1;
+}
+body .popup-game-over .message-game-over .content-game-over {
+  flex: 2;
+}
+body .popup-game-over .message-game-over .button-game-over {
+  flex: 1;
+}
+body .popup-game-over .message-game-over .button-game-over .accept,
+body .popup-game-over .message-game-over .button-game-over .deny {
+  width: 10rem;
+  height: 50%;
+  margin: 0 10px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+body .popup-game-over .message-game-over .button-game-over .accept {
+  color: #ffffff;
+  background-color: forestgreen;
+}
+body .popup-game-over .message-game-over .button-game-over .deny {
+  color: #ffffff;
+  background-color: red;
+}
+
+.div-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.div-left .go-menu {
+  padding: 1.5rem;
+}
+
+.div-right {
+  flex: 1;
+}
+
+.wrap {
   width: 100vw;
   height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
+  justify-content: center;
+  flex: 2;
 }
 
 .game-main {
-  background-color: #ccc;
+  background-color: #dfdfdf;
   width: 100vmin;
   height: 100vmin;
-  margin: auto;
-  display: -ms-grid;
   display: grid;
-  -ms-grid-rows: (1fr)[21];
-      grid-template-rows: repeat(21, 1fr);
-  -ms-grid-columns: (1fr)[21];
-      grid-template-columns: repeat(21, 1fr);
+  grid-template-rows: repeat(21, 1fr);
+  grid-template-columns: repeat(21, 1fr);
+  position: relative;
 }
+
+.swap-level {
+  width: 100vmin;
+  height: 100vmin;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #dfdfdf;
+}
+
+.popup-new-game {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-new-game .new-game-main {
+  width: 30%;
+  height: 90%;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.popup-new-game .new-game-main .display-choose-level {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+}
+.popup-new-game .new-game-main .display-choose-level .btn-level {
+  margin: 1.5rem 3rem;
+  padding: 1rem;
+}
+.popup-new-game .new-game-main .display-choose-level .go-back {
+  padding: 1rem;
+  margin: 1rem;
+}
+.popup-new-game .new-game-main .image-game {
+  width: 100%;
+  height: 30%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.popup-new-game .new-game-main .title-new-game {
+  font-style: italic;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+.popup-new-game .new-game-main .btn-new-game,
+.popup-new-game .new-game-main .choose-level,
+.popup-new-game .new-game-main .highest-score-new-game {
+  margin: 2rem 0;
+  padding: 2rem;
+  width: 15rem;
+}
+
 /*# sourceMappingURL=style.css.map */

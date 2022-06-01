@@ -4,185 +4,52 @@ let sizeX = Number.parseInt(getVariable.getPropertyValue('--variable-sizeX'))
 let sizeY = Number.parseInt(getVariable.getPropertyValue('--variable-sizeY'))
 
 
-let bodySnake = [
-    {
-        x: 5,
-        y: 2
-    }
-]
+let bodySnake = []
 
-let foodPosition = {
-    x: 10,
-    y: 5
-}
+let foodPosition = {}
 
 let wall = []
+
+let rock = {x: randomInTheRange(1, sizeX), y: randomInTheRange(1, sizeY)}
+
+let gift = {}
+
+let newLocalRock = {x: 1, y: 0}
 
 
 let newLocal = {x: 0, y: 0}
 let lastLocal = {x: 1, y: 0}
-
-window.addEventListener('keydown', e => {
-    lastLocal = newLocal
-    switch (e.key) {
-        case 'ArrowUp':
-            if (lastLocal.y !== 0)
-                break
-            newLocal = {x: 0, y: -1}
-            break;
-        case 'ArrowDown':
-            if (lastLocal.y !== 0)
-                break
-            newLocal = {x: 0, y: 1}
-            break;
-        case 'ArrowLeft':
-            if (lastLocal.x !== 0)
-                break
-            newLocal = {x: -1, y: 0}
-            break;
-        case 'ArrowRight':
-            if (lastLocal.x !== 0)
-                break
-            newLocal = {x: 1, y: 0}
-            break;
-    }
-})
-
-const checkNotWall = () => {
-    if (bodySnake[0].x > sizeX) {
-        bodySnake[0].x = 1
-    }
-    if (bodySnake[0].x === 0) {
-        bodySnake[0].x = sizeX
-    }
-    if (bodySnake[0].y > sizeY) {
-        bodySnake[0].y = 1
-    }
-    if (bodySnake[0].y === 0) {
-        bodySnake[0].y = sizeY
-    }
-}
-
-const setUpSnake = (gameBoard) => {
-    bodySnake.map((snake, count) => {
-        const snakeElement = document.createElement('div')
-        snakeElement.style.gridRowStart = snake.y
-        snakeElement.style.gridColumnStart = snake.x
-        if (count === 0)
-            snakeElement.style.backgroundColor = 'green'
-        else
-            snakeElement.style.backgroundColor = '#3db500'
-        gameBoard.append(snakeElement)
-    })
-}
-
-const updateSnake = () => {
-    for (let index = bodySnake.length - 2; index >= 0; index--) {
-        bodySnake[index + 1] = {...bodySnake[index]}
-    }
-    bodySnake[0].x += newLocal.x
-    bodySnake[0].y += newLocal.y
-}
-
-const generateRandom = () => {
-    let randX = generateRandomX();
-    let randY = generateRandomY();
-    bodySnake.map(snake => {
-        if ((randX === snake.x) && (randY === snake.y)) {
-            randX = generateRandomX()
-            randY = generateRandomY()
-        }
-    })
-
-    wall.map(segment => {
-        if ((randX === segment.x) && (randY === segment.y)) {
-            randX = generateRandomX()
-            randY = generateRandomY()
-        }
-    })
-    const result = {
-      x: randX,
-      y: randY
-    };
-    return result;
-}
-
-
-const generateRandomX = (min = 2, max = sizeX - 1) => {
-    let difference = max - min;
-    let rand = Math.random();
-    rand = Math.floor(rand * difference);
-    rand = rand + min;
-    return rand;
-}
-
-const generateRandomY = (min = 2, max = sizeY - 1) => {
-    let difference = max - min;
-    let rand = Math.random();
-    rand = Math.floor(rand * difference);
-    rand = rand + min;
-    return rand;
-}
-
-const setUpFood = (gameBoard) => {
-    const foodElement = document.createElement('div')
-    foodElement.style.gridRowStart = foodPosition.y
-    foodElement.style.gridColumnStart = foodPosition.x
-    foodElement.style.backgroundColor = 'red'
-    gameBoard.append(foodElement)
-}
-
-const updateFood = () => {
-    // let randomX = generateRandomX()
-    // let randomY = generateRandomY()
-    // bodySnake.map(snake => {
-    //     if ((randomX === snake.x) && (randomY === snake.y)) {
-    //         randomX = generateRandomX()
-    //         randomY = generateRandomY()
-    //     }
-    // })
-    //
-    // wall.map(segment => {
-    //     if ((randomX === segment.x) && (randomY === segment.y)) {
-    //         randomX = generateRandomX()
-    //         randomY = generateRandomY()
-    //     }
-    // })
-    foodPosition.x = generateRandom().x
-    foodPosition.y = generateRandom().y
-}
-
 let score = 0;
+let currentLevel = 1;
+const gameBoard = $('.game-main')
+const SWAP_LEVEL = 10
+let scoreHigh = $('.score-high')
+let popUpGameOver = $('.popup-game-over')
+let btnAccept = $('.accept')
+let btnDeny = $('.deny')
+let futureScore = 0;
+let nextLevel = $('.swap-level')
+let count = 0;
+let newScore = 0;
+let levelLabel = $('.level')
+let scoreLabel = $('.score')
+let btnNewGame = $('.btn-new-game')
+let popupNewGame = $('.popup-new-game')
+let chooseLevel = $('.choose-level')
+let displayChooseLevel = $('.display-choose-level')
+let goBack = $('.go-back')
+let level = $('.btn-level')
+let highestScore = $('.highest-score')
+let highestScoreNewGame = $('.highest-score-new-game')
+let goMenu = $('.go-menu')
+let giftLabel = $('.gift')
+let giftString = "Nothing"
+let checkGift;
 
 
-const checkEat = () => {
-    if ((bodySnake[0].x === foodPosition.x) && (bodySnake[0].y === foodPosition.y)) {
-        score++;
-        bodySnake.push(foodPosition)
-        updateFood()
-    }
-}
+let interval = setInterval(main, 250)
 
-const checkWinLevelEasy = () => {
-    bodySnake.map((snake, index) => {
-        if (index > 1) {
-            if (bodySnake[0].x === snake.x && bodySnake[0].y === snake.y) {
-                alert('Fail')
-            }
-        }
-    })
-}
-
-const checkWinLevel1 = () => {
-    checkWinLevelEasy()
-    wall.map(segment => {
-        if (bodySnake[0].x === segment.x && bodySnake[0].y === segment.y) {
-            alert('Fail Wall')
-        }
-    })
-
-}
-
+// Set up wall
 const setUpArrWallLevel1 = () => {
     for (let i = 1; i <= sizeX; i++) {
         for (let j = 1; j <= sizeY; j++) {
@@ -231,15 +98,395 @@ const setUpArrWallLevel2 = () => {
     }
 }
 
-setUpArrWallLevel1()
-setUpArrWallLevel2()
+const setUpArrWallLevel3 = () => {
+    for (let i = 1; i <= sizeX; i++) {
+        for (let j = 1; j <= sizeY; j++) {
+            if ((((j === 7) || (j === sizeX - 6)) && (i >= 3) && (i <= sizeY - 2))) {
+                wall.push({x: i, y: j})
+            }
+            if ((((j === 10) || (j === sizeX - 9)) && (i >= 6) && (i <= sizeY - 5))) {
+                wall.push({x: i, y: j})
+            }
+        }
+    }
+}
 
-const setUpWall = (gameBoard) => {
+
+function nextLevelFunc() {
+    clearInterval(interval)
+    nextLevel.css("display", "flex");
+    gameBoard.css("display", "none");
+    setTimeout(function () {
+        nextLevel.css("display", "none");
+        gameBoard.css("display", "grid");
+        interval = setInterval(main, 250)
+    }, 1000)
+}
+
+function setUpNewGame() {
+    futureScore = score + SWAP_LEVEL;
+    switch (currentLevel) {
+        case 1:
+            currentLevel = 2
+            break;
+        case 2:
+            currentLevel = 3
+            wall = []
+            setUpArrWallLevel2()
+            setNewGame()
+            nextLevelFunc()
+            break;
+        case 3:
+            currentLevel = 4
+            wall = []
+            setUpArrWallLevel1()
+            setNewGame()
+            nextLevelFunc()
+            break
+        case 4:
+            currentLevel = 5
+            wall = []
+            setUpArrWallLevel3()
+            setNewGame()
+            nextLevelFunc()
+            break
+        case 5:
+            currentLevel = 6
+            wall = []
+            setUpArrWallLevel1()
+            setUpArrWallLevel2()
+            setNewGame()
+            nextLevelFunc()
+            break
+        case 6:
+            currentLevel = 7
+            wall = []
+            setUpArrWallLevel2()
+            setUpArrWallLevel3()
+            setNewGame()
+            nextLevelFunc()
+            break
+        case 7:
+            currentLevel = 8
+            wall = []
+            setUpArrWallLevel1()
+            setUpArrWallLevel2()
+            setUpArrWallLevel3()
+            setNewGame()
+            nextLevelFunc()
+            break
+    }
+}
+
+function generateRandomX(min = 2, max = sizeX - 1) {
+    let difference = max - min;
+    let rand = Math.random();
+    rand = Math.floor(rand * difference);
+    rand += min;
+    return rand;
+}
+
+function generateRandomY(min = 2, max = sizeY - 1) {
+    let difference = max - min;
+    let rand = Math.random();
+    rand = Math.floor(rand * difference);
+    rand += min;
+    return rand;
+}
+
+
+function randomSetUpPosition(...element) {
+    let randX = generateRandomX();
+    let randY = generateRandomY();
+    for (const x of element) {
+        if (Array.isArray(x)) {
+            x.map(segment => {
+                if ((randX === segment.x) && (randY === segment.y)) {
+                    randX = randomSetUpPosition(x, segment, ...element).x
+                    randY = randomSetUpPosition(x, segment, ...element).y
+                }
+            })
+        } else {
+            if ((randX === x.x) && (randY === x.y)) {
+                randX = randomSetUpPosition(x, ...element).x
+                randY = randomSetUpPosition(x, ...element).y
+            }
+        }
+    }
+    return {x: randX, y: randY};
+}
+
+const setNewGame = () => {
+    newLocal = {x: 0, y: 0}
+    // Set up food
+    foodPosition = randomSetUpPosition(wall)
+    // Random position snake
+    bodySnake = []
+    bodySnake[0] = randomSetUpPosition(wall, foodPosition)
+}
+
+setNewGame();
+
+function randomInTheRange(min, max) {
+    let difference = max - min;
+    let rand = Math.random();
+    rand = Math.floor(rand * difference);
+    rand += min;
+    return rand;
+}
+
+function rockMove() {
+    if (rock.x >= sizeX) {
+        newLocalRock = {x: randomInTheRange(-1, -1), y: randomInTheRange(-1, 1)}
+    }
+
+    if (rock.x < 1) {
+        newLocalRock = {x: randomInTheRange(1, 1), y: randomInTheRange(-1, 1)}
+    }
+
+    if (rock.y >= sizeY) {
+        newLocalRock = {x: randomInTheRange(-1, 1), y: randomInTheRange(-1, -1)}
+    }
+
+    if (rock.y < 1) {
+        newLocalRock = {x: randomInTheRange(-1, 1), y: randomInTheRange(1, 1)}
+    }
+    rock.x += newLocalRock.x
+    rock.y += newLocalRock.y
+}
+
+
+const checkNotWall = () => {
+    if (bodySnake[0].x > sizeX) {
+        bodySnake[0].x = 1
+    }
+    if (bodySnake[0].x === 0) {
+        bodySnake[0].x = sizeX
+    }
+    if (bodySnake[0].y > sizeY) {
+        bodySnake[0].y = 1
+    }
+    if (bodySnake[0].y === 0) {
+        bodySnake[0].y = sizeY
+    }
+}
+
+const setUpRock = (gameBoard) => {
+    const rockElement = document.createElement('div')
+    rockElement.style.gridRowStart = rock.y
+    rockElement.style.gridColumnStart = rock.x
+    rockElement.style.backgroundImage = "url('/image/rock.png')"
+    rockElement.style.backgroundPosition = "center"
+    rockElement.style.backgroundSize = "contain"
+    gameBoard.append(rockElement)
+}
+
+const setUpGift = (gameBoard) => {
+    const giftElement = document.createElement('div')
+    giftElement.style.gridRowStart = gift.y
+    giftElement.style.gridColumnStart = gift.x
+    giftElement.style.backgroundImage = "url('/image/gift.png')"
+    giftElement.style.backgroundPosition = "center"
+    giftElement.style.backgroundSize = "contain"
+    giftElement.style.backgroundRepeat = "no-repeat"
+    gameBoard.append(giftElement)
+}
+
+const setUpSnake = (gameBoard) => {
+    bodySnake.map((snake, count) => {
+        const snakeElement = document.createElement('div')
+        snakeElement.style.gridRowStart = snake.y
+        snakeElement.style.gridColumnStart = snake.x
+        if (count === 0) {
+            snakeElement.style.backgroundColor = "green"
+        } else {
+            snakeElement.style.backgroundColor = "#39b54a"
+        }
+        gameBoard.append(snakeElement)
+    })
+}
+
+const updateSnake = () => {
+    for (let index = bodySnake.length - 2; index >= 0; index--) {
+        bodySnake[index + 1] = {...bodySnake[index]}
+    }
+    bodySnake[0].x += newLocal.x
+    bodySnake[0].y += newLocal.y
+}
+
+const setUpFood = (gameBoard) => {
+    const foodElement = document.createElement('div')
+    foodElement.style.gridRowStart = foodPosition.y
+    foodElement.style.gridColumnStart = foodPosition.x
+    foodElement.style.backgroundImage = "url('/image/apple.jpg')"
+    foodElement.style.backgroundPosition = "center"
+    foodElement.style.backgroundSize = "contain"
+    foodElement.style.backgroundColor = "#dfdfdf"
+    gameBoard.append(foodElement)
+}
+
+const eventKey = (e) => {
+    lastLocal = newLocal
+    switch (e.key) {
+        case 'ArrowUp':
+            if (lastLocal.y !== 0) {
+                break
+            }
+            newLocal = {x: 0, y: -1}
+            break;
+        case 'ArrowDown':
+            if (lastLocal.y !== 0) {
+                break
+            }
+            newLocal = {x: 0, y: 1}
+            break;
+        case 'ArrowLeft':
+            if (lastLocal.x !== 0) {
+                break
+            }
+            newLocal = {x: -1, y: 0}
+            break;
+        case 'ArrowRight':
+            if (lastLocal.x !== 0) {
+                break
+            }
+            newLocal = {x: 1, y: 0}
+            break;
+    }
+}
+
+const eventKeyWithGift = (e) => {
+    lastLocal = newLocal
+    switch (e.key) {
+        case 'ArrowDown':
+            if (lastLocal.y !== 0) {
+                break
+            }
+            newLocal = {x: 0, y: -1}
+            break;
+        case 'ArrowUp':
+            if (lastLocal.y !== 0) {
+                break
+            }
+            newLocal = {x: 0, y: 1}
+            break;
+        case 'ArrowRight':
+            if (lastLocal.x !== 0) {
+                break
+            }
+            newLocal = {x: -1, y: 0}
+            break;
+        case 'ArrowLeft':
+            if (lastLocal.x !== 0) {
+                break
+            }
+            newLocal = {x: 1, y: 0}
+            break;
+    }
+}
+
+window.addEventListener('keydown', eventKey)
+
+
+const checkEat = () => {
+    let numberRand
+    if ((bodySnake[0].x === foodPosition.x) && (bodySnake[0].y === foodPosition.y)) {
+
+        score++;
+        foodPosition = randomSetUpPosition(wall, bodySnake)
+        bodySnake.push(foodPosition)
+        if (score % 5 === 0 && score % 10 !== 0) {
+            gift = randomSetUpPosition(wall, bodySnake, foodPosition, rock)
+        }
+
+        if (checkGift) {
+            checkGift = false
+            clearInterval(interval)
+            interval = setInterval(main, 250)
+            window.removeEventListener('keydown', eventKeyWithGift)
+            window.addEventListener('keydown', eventKey)
+            giftString = "Nothing"
+        }
+    }
+
+    if ((bodySnake[0].x === gift.x) && (bodySnake[0].y === gift.y)) {
+        checkGift = true
+        numberRand = randomInTheRange(1, 3)
+        delete gift.x
+        delete gift.y
+    }
+
+    if (checkGift) {
+        switch (numberRand) {
+            case 1:
+                giftString = "Reverse"
+                window.removeEventListener('keydown', eventKey)
+                window.addEventListener('keydown', eventKeyWithGift)
+                break;
+            case 2:
+                giftString = "High speed"
+                clearInterval(interval)
+                interval = setInterval(main, 100)
+                break;
+            case 3:
+                giftString = "Low speed"
+                clearInterval(interval)
+                interval = setInterval(main, 1000)
+                break;
+        }
+    }
+}
+
+
+const checkWinLevelEasy = () => {
+    bodySnake.map((snake, index) => {
+        if (index > 1) {
+            if (bodySnake[0].x === snake.x && bodySnake[0].y === snake.y) {
+                gameOver()
+            }
+        }
+    })
+}
+
+function gameOver() {
+    popUpGameOver.css("display", "flex")
+    btnAccept.click(function () {
+        window.removeEventListener('keydown', eventKeyWithGift)
+        window.addEventListener('keydown', eventKey)
+        popUpGameOver.css("display", "none")
+        setNewGame()
+    })
+    btnDeny.click(function () {
+        popupNewGame.css("display", "flex")
+        popUpGameOver.css("display", "none")
+    })
+    score = 0
+}
+
+const checkWinLevel1 = () => {
+    checkWinLevelEasy()
+    wall.map(segment => {
+        if (bodySnake[0].x === segment.x && bodySnake[0].y === segment.y) {
+            gameOver()
+        }
+    })
+    bodySnake.map(snake => {
+        if (rock.x === snake.x && rock.y === snake.y) {
+            gameOver()
+        }
+    })
+}
+
+
+function setUpWall(gameBoard) {
     wall.map(segment => {
         const wall = document.createElement('div')
         wall.style.gridRowStart = segment.y
         wall.style.gridColumnStart = segment.x
-        wall.style.backgroundColor = 'blue'
+        wall.style.backgroundSize = "cover"
+        wall.style.backgroundPosition = "center"
+        wall.style.backgroundRepeat = "repeat"
+        wall.style.backgroundImage = "url('/image/brick.jpg')"
         gameBoard.append(wall)
     })
 }
@@ -254,21 +501,85 @@ const level1 = () => {
 }
 
 const setUp = (gameBoard) => {
+    setUpWall(gameBoard)
     setUpSnake(gameBoard)
     setUpFood(gameBoard)
+    setUpRock(gameBoard)
+    setUpGift(gameBoard)
 }
 
+btnNewGame.click(function () {
+    currentLevel = 2
+    wall = []
+    setNewGame()
+    popupNewGame.css("display", "none")
+    popUpGameOver.css("display", "none")
+    clearInterval(interval)
+    interval = setInterval(main, 250)
+    window.removeEventListener('keydown', eventKeyWithGift)
+    window.addEventListener('keydown', eventKey)
+})
+chooseLevel.click(function () {
+    displayChooseLevel.css("display", "flex")
+    popUpGameOver.css("display", "none")
+})
+goBack.click(function () {
+    displayChooseLevel.css("display", "none")
+    popupNewGame.css("display", "flex")
+    popUpGameOver.css("display", "none")
+})
+level.click(function () {
+    currentLevel = parseInt($(this).val())
+    setUpNewGame()
+    popUpGameOver.css("display", "none")
+    popupNewGame.css("display", "none")
+    nextLevel.css("display", "none")
+    clearInterval(interval)
+    interval = setInterval(main, 250)
+    window.removeEventListener('keydown', eventKeyWithGift)
+    window.addEventListener('keydown', eventKey)
+})
+goMenu.click(function () {
+    popupNewGame.css("display", "flex")
+    popUpGameOver.css("display", "none")
+})
 
-const gameBoard = $('.game-main')
 
 function main() {
     gameBoard.html('')
+
+    if (currentLevel > 3) {
+        rockMove()
+    }
+
+    if (score > parseInt(scoreHigh.text())) {
+        scoreHigh.text(score)
+        localStorage.setItem('highestScore', parseInt(scoreHigh.text()))
+    }
+    if (localStorage.getItem('highestScore') === null) {
+        highestScoreNewGame.text('HIGHEST SCORE: ' + 0)
+        scoreHigh.text(0)
+    } else {
+        highestScoreNewGame.text('HIGHEST SCORE: ' + localStorage.getItem('highestScore'))
+        scoreHigh.text(localStorage.getItem('highestScore'))
+    }
+    levelLabel.text('Level: ' + (currentLevel - 1));
+    scoreLabel.text('Score: ' + score);
+    giftLabel.text('Gift: ' + giftString)
+    newScore = score + 1
     level1()
     levelEasy()
     setUp(gameBoard)
     updateSnake()
     checkEat()
-    setUpWall(gameBoard)
+    if (score === newScore) {
+        count = 0;
+    }
+    if (count === 0) {
+        if (score === futureScore) {
+            setUpNewGame()
+        }
+    }
 }
 
-let interval = setInterval(main, 250)
+

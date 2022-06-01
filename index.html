@@ -10,7 +10,54 @@
 </head>
 
 <body>
-<div class="game-main"></div>
+<div class="div-left">
+    <button class="go-menu">GO TO MENU</button>
+</div>
+<div class="wrap">
+    <div class="game-main"></div>
+    <div class="swap-level">NEXT LEVEL</div>
+</div>
+<div class="div-right">
+    <div class="level">Level: </div>
+    <div class="score">Score: </div>
+    <div class="gift">Gift: </div>
+    <div class="highest-score">Highest score: <span class="score-high">0</span></div>
+</div>
+<div class="popup-game-over">
+    <div class="message-game-over">
+        <div class="title-game-over">
+            Game over
+        </div>
+        <div class="content-game-over">
+            Do you want to replay the current level?
+        </div>
+        <div class="button-game-over">
+            <button class="accept">YES</button>
+            <button class="deny">NO</button>
+        </div>
+    </div>
+</div>
+<div class="popup-new-game">
+    <div class="new-game-main">
+        <div class="image-game" style="background-image: url('/image/snake.png')" ></div>
+        <div class="title-new-game">SNAKE GAME</div>
+        <button class="btn-new-game">NEW GAME</button>
+        <button class="choose-level">CHOOSE LEVEL</button>
+        <div class="highest-score-new-game">HIGHEST SCORE: </div>
+        <div class="display-choose-level">
+            <div>
+                <button class="go-back">Go back</button>
+            </div>
+            <button class="btn-level" value="1">Level: 1</button>
+            <button class="btn-level" value="2">Level: 2</button>
+            <button class="btn-level" value="3">Level: 3</button>
+            <button class="btn-level" value="4">Level: 4</button>
+            <button class="btn-level" value="5">Level: 5</button>
+            <button class="btn-level" value="6">Level: 6</button>
+            <button class="btn-level" value="7">Level: 7</button>
+        </div>
+    </div>
+</div>
 <script
         src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="

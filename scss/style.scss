@@ -14,18 +14,206 @@ $sizeY: 21;
 body {
     padding: 0;
     margin: 0;
+    display: flex;
+    position: relative;
+
+    .div-right {
+        display: flex;
+        flex-direction: column;
+
+        .level, .score, .highest-score, .gift {
+            font-size: 3rem;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #dfdfdf;
+            margin: 0.5rem;
+        }
+
+        span {
+            font-size: 3rem;
+        }
+    }
+
+    .popup-game-over {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 98%);
+        display: none;
+        justify-content: center;
+        align-items: center;
+
+        .message-game-over {
+            width: 40%;
+            height: 30%;
+            background-color: #fff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .title-game-over,
+            .content-game-over,
+            .button-game-over {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.5rem;
+            }
+
+            .content-game-over {
+                font-size: 2rem;
+            }
+
+            .title-game-over {
+                flex: 1;
+            }
+
+            .content-game-over {
+                flex: 2;
+            }
+
+            .button-game-over {
+                flex: 1;
+
+                .accept,
+                .deny {
+                    width: 10rem;
+                    height: 50%;
+                    margin: 0 10px;
+                    outline: none;
+                    border: none;
+                    border-radius: 5px;
+                }
+
+                .accept {
+                    color: #ffffff;
+                    background-color: forestgreen;
+                }
+
+                .deny {
+                    color: #ffffff;
+                    background-color: red;
+                }
+            }
+        }
+    }
+}
+
+.div-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .go-menu {
+        padding: 1.5rem;
+    }
+}
+
+.div-right {
+    flex: 1;
+
+
+}
+
+.wrap {
     width: 100vw;
     height: 100vh;
     display: flex;
+    justify-content: center;
+    flex: 2;
+    //align-items: center;
 }
 
 .game-main {
-    background-color: #ccc;
+    background-color: #dfdfdf;
     width: 100vmin;
     height: 100vmin;
-    margin: auto;
+    //margin: auto;
     display: grid;
     grid-template-rows: repeat($sizeX, 1fr);
     grid-template-columns: repeat($sizeY, 1fr);
     position: relative;
+}
+
+.swap-level {
+    width: 100vmin;
+    height: 100vmin;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #dfdfdf;
+}
+
+.popup-new-game {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .new-game-main {
+        width: 30%;
+        height: 90%;
+        border: 1px solid #dfdfdf;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+
+
+        .display-choose-level {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+
+            .btn-level {
+                margin: 1.5rem 3rem;
+                padding: 1rem;
+            }
+
+            .go-back {
+                padding: 1rem;
+                margin: 1rem;
+            }
+        }
+
+        .image-game {
+            width: 100%;
+            height: 30%;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .title-new-game {
+            font-style: italic;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-new-game,
+        .choose-level,
+        .highest-score-new-game {
+            margin: 2rem 0;
+            padding: 2rem;
+            width: 15rem;
+        }
+    }
 }
