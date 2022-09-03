@@ -4,7 +4,8 @@
 }
 
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   font-size: 16px;
 }
 
@@ -15,13 +16,22 @@
 body {
   padding: 0;
   margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   position: relative;
 }
+
 body .div-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
+
 body .div-right .level, body .div-right .score, body .div-right .highest-score, body .div-right .gift {
   font-size: 3rem;
   padding: 1rem;
@@ -29,49 +39,81 @@ body .div-right .level, body .div-right .score, body .div-right .highest-score, 
   border: 1px solid #dfdfdf;
   margin: 0.5rem;
 }
+
 body .div-right span {
   font-size: 3rem;
 }
+
 body .popup-game-over {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.98);
+  background-color: black;
   display: none;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 body .popup-game-over .message-game-over {
   width: 40%;
   height: 30%;
   background-color: #fff;
   border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 body .popup-game-over .message-game-over .title-game-over,
 body .popup-game-over .message-game-over .content-game-over,
 body .popup-game-over .message-game-over .button-game-over {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 1.5rem;
 }
+
 body .popup-game-over .message-game-over .content-game-over {
   font-size: 2rem;
 }
+
 body .popup-game-over .message-game-over .title-game-over {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
+
 body .popup-game-over .message-game-over .content-game-over {
-  flex: 2;
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
 }
+
 body .popup-game-over .message-game-over .button-game-over {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
+
 body .popup-game-over .message-game-over .button-game-over .accept,
 body .popup-game-over .message-game-over .button-game-over .deny {
   width: 10rem;
@@ -81,44 +123,66 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   border: none;
   border-radius: 5px;
 }
+
 body .popup-game-over .message-game-over .button-game-over .accept {
   color: #ffffff;
   background-color: forestgreen;
 }
+
 body .popup-game-over .message-game-over .button-game-over .deny {
   color: #ffffff;
   background-color: red;
 }
 
 .div-left {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .div-left .go-menu {
   padding: 1.5rem;
 }
 
 .div-right {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 .wrap {
   width: 100vw;
   height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  flex: 2;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
 }
 
 .game-main {
   background-color: #dfdfdf;
   width: 100vmin;
   height: 100vmin;
+  display: -ms-grid;
   display: grid;
-  grid-template-rows: repeat(21, 1fr);
-  grid-template-columns: repeat(21, 1fr);
+  -ms-grid-rows: (1fr)[21];
+      grid-template-rows: repeat(21, 1fr);
+  -ms-grid-columns: (1fr)[21];
+      grid-template-columns: repeat(21, 1fr);
   position: relative;
 }
 
@@ -126,8 +190,12 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   width: 100vmin;
   height: 100vmin;
   display: none;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   background-color: #dfdfdf;
 }
 
@@ -138,21 +206,38 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   right: 0;
   bottom: 0;
   background-color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
+
 .popup-new-game .new-game-main {
   width: 30%;
   height: 90%;
   border: 1px solid #dfdfdf;
   border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   position: relative;
 }
+
 .popup-new-game .new-game-main .display-choose-level {
   position: absolute;
   top: 0;
@@ -162,16 +247,22 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   background-color: white;
   border-radius: 10px;
   display: none;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
+
 .popup-new-game .new-game-main .display-choose-level .btn-level {
   margin: 1.5rem 3rem;
   padding: 1rem;
 }
+
 .popup-new-game .new-game-main .display-choose-level .go-back {
   padding: 1rem;
   margin: 1rem;
 }
+
 .popup-new-game .new-game-main .image-game {
   width: 100%;
   height: 30%;
@@ -179,11 +270,13 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   background-size: contain;
   background-repeat: no-repeat;
 }
+
 .popup-new-game .new-game-main .title-new-game {
   font-style: italic;
   font-size: 2rem;
   margin-bottom: 3rem;
 }
+
 .popup-new-game .new-game-main .btn-new-game,
 .popup-new-game .new-game-main .choose-level,
 .popup-new-game .new-game-main .highest-score-new-game {
@@ -191,5 +284,4 @@ body .popup-game-over .message-game-over .button-game-over .deny {
   padding: 2rem;
   width: 15rem;
 }
-
 /*# sourceMappingURL=style.css.map */
