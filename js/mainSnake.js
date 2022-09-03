@@ -41,7 +41,7 @@ let giftLabel = $('.gift') // Label gift hiện tại
 let giftString = "Nothing"
 let checkGift;
 let lastNumberRand = []
-let imgBoom = "url('/image/boom.png')"
+let imgBoom = "url('image/boom.png')"
 let numberRand // Random các item
 
 let interval = setInterval(main, 250)
@@ -325,7 +325,7 @@ const setUpRock = (gameBoard) => {
     const rockElement = document.createElement('div')
     rockElement.style.gridRowStart = rock.y
     rockElement.style.gridColumnStart = rock.x
-    rockElement.style.backgroundImage = "url('/image/rock.png')"
+    rockElement.style.backgroundImage = "url('image/rock.png')"
     rockElement.style.backgroundPosition = "center"
     rockElement.style.backgroundSize = "contain"
     rockElement.style.backgroundRepeat = "no-repeat"
@@ -390,7 +390,7 @@ const setUpFood = (gameBoard) => {
     const foodElement = document.createElement('div')
     foodElement.style.gridRowStart = foodPosition.y
     foodElement.style.gridColumnStart = foodPosition.x
-    foodElement.style.backgroundImage = "url('/image/apple.jpg')"
+    foodElement.style.backgroundImage = "url('image/apple.jpg')"
     foodElement.style.backgroundPosition = "center"
     foodElement.style.backgroundSize = "contain"
     foodElement.style.backgroundColor = "#dfdfdf"
@@ -479,14 +479,14 @@ function randomBoom() {
                 for (let j = randomBoomPos.y - 1; j < randomBoomPos.y - 1 + 3; j++) {
                     let temp = {x: i, y: j}
                     boom.push(temp)
-                    imgBoom = "url('/image/boomed.png')"
+                    imgBoom = "url('image/boomed.png')"
                 }
             }
         }, 5000)
         setTimeout(() => {
             // Reset sau khi boom nổ
             boom = []
-            imgBoom = "url('/image/boom.png')"
+            imgBoom = "url('image/boom.png')"
         }, 5500)
     }
 }
@@ -510,17 +510,17 @@ const checkEat = () => {
                 if (nextLevelCount > 3 && nextLevelCount <= 5) {
                     switch (numberRand) {
                         case 1:
-                            giftElement.style.backgroundImage = "url('/image/arrow.png')"
+                            giftElement.style.backgroundImage = "url('image/arrow.png')"
                             break;
                         case 2:
-                            giftElement.style.backgroundImage = "url('/image/fast.png')"
+                            giftElement.style.backgroundImage = "url('image/fast.png')"
                             break;
                         case 3:
-                            giftElement.style.backgroundImage = "url('/image/slow.png')"
+                            giftElement.style.backgroundImage = "url('image/slow.png')"
                             break;
                     }
                 } else {
-                    giftElement.style.backgroundImage = "url('/image/gift.png')"
+                    giftElement.style.backgroundImage = "url('image/gift.png')"
                 }
             }
         }
@@ -626,7 +626,7 @@ function setUpWall(gameBoard) {
         wall.style.backgroundSize = "cover"
         wall.style.backgroundPosition = "center"
         wall.style.backgroundRepeat = "repeat"
-        wall.style.backgroundImage = "url('/image/brick.jpg')"
+        wall.style.backgroundImage = "url('image/brick.jpg')"
         gameBoard.append(wall)
     })
 }
